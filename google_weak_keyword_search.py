@@ -1,16 +1,18 @@
 # ブラウザを自動操作するためseleniumをimport
-
+from selenium import webdriver
 # seleniumでEnterキーを送信する際に使用するのでimport
-
-# seleniumでヘッドレスモードを指定するためにimport
-
-# 待ち時間を指定するためにtimeをimport
-
+from selenium.webdriver.common.keys import Keys
+# seleniumでブラウザの検索テキストボックスの属性を取得するためにimport
+from selenium.webdriver.common.by import By
+# seleniumでヘッドレスモード(裏で動作させるモード)を指定するためにimport
+from selenium.webdriver.chrome.options import Options
+# 待ち時間を指定するためにtime(プログラムを一時停止したりするのに使用)をimport
+import time
 # 正規表現にマッチする文字列を探すためにreをimport
-
+import re
 
 # Googleのトップページ
-
+URL = "https://www.google.com"
 '''
 メインの処理
 Googleの検索エンジンでキーワードを検索
@@ -25,16 +27,17 @@ Googleの検索エンジンでキーワードを検索
 
 # seleniumで自動操作するブラウザはGoogleChrome
 # Optionsオブジェクトを作成
-
-# ヘッドレスモードを有効にする
+options = Options()
+# ヘッドレスモードを有効にする(ブラウザが立ち上がった時に見えない形で裏で動作させる)
 # options.add_argument('--headless')
 
 # ChromeのWebDriverオブジェクトを作成
 
-# 'chromedriver' executable needs to be in PATH. のエラーが出た場合は下記の書き方に変更します。
-# driver = webdriver.Chrome(options=options, executable_path=r"chromedriverのpathを書く")
+# Chormeブラウザを起動させて、Pythonで操作できるようにする
+driver = webdriver.Chrome(options=options)
 
 # Googleのトップページを開く
+driver.get(URL)
 # 2秒待機（読み込みのため）
 
 # 検索キーワードを１つずつ取り出す
@@ -53,15 +56,15 @@ Googleの検索エンジンでキーワードを検索
 '''
 
 # 検索テキストボックスの要素をname属性から取得
-
+input_element = driver.find_element(By.NAME,"q")
 # 検索テキストボックスに入力されている文字列を消去
-
+input_element.clear()
 # 検索テキストボックスにキーワードを入力
-
+input_element.send_keys("転職")
 # Enterキーを送信
-
+input_element.send_keys(Keys.RETURN)
 # 2秒待機
-
+time.sleep(2)
 '''
 検索結果ページの1位から10位までのURLを取得
 '''
@@ -90,3 +93,6 @@ URLリストからドメインを取得し、指定ドメインに含まれて�
 # ドメインチェック済みのキーワードを戻り値に指定
 
 # main関数を実行
+
+input("Enterを押すまでChromeを開いたままにします...")
+driver.quit()
