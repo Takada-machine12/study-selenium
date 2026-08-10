@@ -20,9 +20,13 @@ Googleの検索エンジンでキーワードを検索
 '''
 
 # '検索キーワードリスト.txt'ファイルを読み込み、リストにする
-# １行ずつ読み込んで改行コードを削除してリストにする
-
+with open('転職キーワードリスト.txt') as f:
+    keywords = [s.rstrip() for s in f.readlines()] # 1行ずつ取り出して、改行除去してsに入れた後、keywordsに入れる
+print(keywords)
 # 'ドメインリスト.txt'ファイルを読み込み、リストにする
+with open('ドメインリスト.txt') as f:
+    domains = [s.rstrip() for s in f.readlines()]
+print(domains)
 # １行ずつ読み込んで改行コードを削除してリストにする
 
 # seleniumで自動操作するブラウザはGoogleChrome
@@ -69,12 +73,18 @@ time.sleep(2)
 検索結果ページの1位から10位までのURLを取得
 '''
 
-# 各ページのURLを入れるためのリストを指定
+# 各ページのURLを入れるために空のリストを用意
+urls = []
 # a要素（各ページの1位から10位までのURL）取得
-# objects = driver.find_elements_by_css_selector('.rc > .r > a')
+objects = driver.find_elements(By.TAG_NAME, "a")
+# rso > div:nth-child(7) > div > div > div > div.kb0PBd.A9Y9g.jGGQ5e > div > div > span > a
 
-# 各ページのURLをリストに追加
-# 各ページのURLが取得できなかった場合は警告を出す
+# a要素の取得有無で処理を分ける
+if objects:
+    for object in objects:
+        urls.append(object.get_attribute("href"))
+else:
+    print("URLを取得できませんでした。")
 # 各ページのURLを戻り値に指定
 
 '''
