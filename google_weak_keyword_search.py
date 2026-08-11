@@ -129,6 +129,7 @@ def domain_checked(urls, domains, ok_keywordlist, keyword):
 
 # main関数を実行
 try:
+    # このファイルが直接実行された時のみ実行させる
     if __name__ == '__main__':
         main()
 except Exception as e:
